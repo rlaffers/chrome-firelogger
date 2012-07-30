@@ -54,7 +54,22 @@ ChromeLogger = {
 		var final = [];
 		for (var log in logs) {
 			//final.push(JSON.stringify(logs[log].args));
-			toConsole(JSON.stringify(logs[log].args));
+			//toConsole(JSON.stringify(logs[log]));
+			
+			if (logs[log].template) { // primitive data types, Exception
+				toConsole(JSON.stringify(logs[log].template));
+			} else if (logs[log].exc_frames[0][0] != undefined) { // objects, (arrays)
+				var data = {};
+				data['object'] = logs[log].exc_frames[0][0];				
+				toConsole(JSON.stringify(data['object']));
+				//data['trace'] = logs[log].exc_info[2];
+				//data['level'] = logs[log].level;
+				//data['time'] = logs[log].time;
+				//toConsole(JSON.stringify(data));				
+			} else { // null
+				toConsole(null);
+			}
+			
 		}
 	},
 };
@@ -82,6 +97,6 @@ if (localStorage['remote']) {
 chrome.experimental.devtools.resources.addRequestHeaders(requestHeaders);
 
 //add panel into devtools
-chrome.experimental.devtools.panels.create("HeaderHelper", "icon32.png", "panel.html");
+//chrome.experimental.devtools.panels.create("HeaderHelper", "icon32.png", "panel.html");
 </script>
 </html>

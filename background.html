@@ -7,8 +7,8 @@
 chrome.extension.onRequest.addListener(function(request) {
 	if (request.command !== 'toConsole')
 		return;
-	chrome.tabs.executeScript(request.tabId, {
-		code: "console.log('" + request.args + "');",
+	chrome.tabs.executeScript(request.tabId, {		
+		code: "console.log(" + request.args + ");",
 		//log,debug,info,warn,error,group,groupCollapsed,groupEnd
 	});
 });
