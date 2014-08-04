@@ -1,9 +1,31 @@
 chrome.extension.onRequest.addListener(function(request) {
-	if (request.command !== 'toConsole')
-		return;
+	if (request.command !== 'toConsole') {
+			return;
+	}
+	var msg, level, method;
+	msg = request.msg;
+	level = request.level;
+	switch (level) {
+			case 'error':
+					method = 'error';
+					break;
+
+			case 'warning':
+					method = 'warn';
+					break;
+
+			case 'info':
+					method = 'info';
+					break;
+
+			case 'debug':
+			case 'log':
+			default:
+					method = 'log';
+					break;
+	}
 	chrome.tabs.executeScript(request.tabId, {		
-		code: "console.log(" + request.args + ");",
-		//log,debug,info,warn,error,group,groupCollapsed,groupEnd
+			code: "console." + method + "(" + msg + ");",
 	});
 });
 

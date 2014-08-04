@@ -1,8 +1,9 @@
-function toConsole(msg) {
+function toConsole(msg, level) {
 	chrome.extension.sendRequest({
 		command: "toConsole",
 		tabId: chrome.experimental.devtools.tabId,
-		args: msg
+		msg: msg,
+		level: level
 		//args: escape(JSON.stringify(Array.prototype.slice.call(arguments, 0)))
 	});
 }
@@ -49,11 +50,12 @@ ChromeLogger = {
 			//toConsole(JSON.stringify(logs[log]));
 			
 			if (logs[log].template) { // primitive data types, Exception
-				toConsole(JSON.stringify(logs[log].template));
+				//toConsole(JSON.stringify(logs[log].template));
+				toConsole(JSON.stringify(logs[log].template), logs[log].level);
 			} else if (logs[log].exc_frames[0][0] != undefined) { // objects, (arrays)
 				var data = {};
 				data['object'] = logs[log].exc_frames[0][0];				
-				toConsole(JSON.stringify(data['object']));
+				toConsole(JSON.stringify(data['object']), logs[log].level);
 				//data['trace'] = logs[log].exc_info[2];
 				//data['level'] = logs[log].level;
 				//data['time'] = logs[log].time;
